@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from PyQt5 import QtCore, uic, QtWidgets
-import os, sys, platform, pickle
+import os, sys, platform, pickle, webbrowser
 from qgis import utils
 from .authSmb import AuthSmb
 from utils import msgBox
@@ -91,20 +91,30 @@ def download_file(path_origin, path_dest, parent):
 def download(paths_data, parent=utils.iface.mainWindow()):
     erro = []
     files_data = []
-    path_dest = get_path_dest(parent)
-    if path_dest == '':
-        return files_data
+    # path_dest = get_path_dest(parent)
+    # if path_dest == '':
+    #     return files_data
     for f_data in paths_data:
         path_origin = f_data['path_origin']
-        path_file = download_file(path_origin, path_dest, parent)
-        if path_file:
-            files_data.append({
-                'path_file' : path_file,
-                'epsg' : f_data['epsg'],
-                'file_name' : f_data['file_name']
-            })
-        else:
-            erro.append(path_file)
+        # path_file = download_file(path_origin, path_dest, parent)
+        # if path_file:
+        #     files_data.append({
+        #         'path_file' : path_file,
+        #         'epsg' : f_data['epsg'],
+        #         'file_name' : f_data['file_name']
+        #     })
+        # else:
+        #     erro.append(path_file)
+        try:
+            webbrowser.get('firefox').open(path_origin)
+        except:
+            try:
+                webbrowser.get('chrome').open(path_origin)
+            except:
+                try:
+                    webbrowser.open(path_origin)
+                except:
+                    erro.append("Não foi possível abrir o navegador para acessar: "+path_origin)
     show_erro(erro, parent) if len(erro) > 0 else ''
     return files_data
 
