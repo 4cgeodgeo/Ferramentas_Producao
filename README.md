@@ -1,6 +1,6 @@
 ## Ferramentas de Produção v3.4.14.1
 
-* Corrigido bug de download de insumos que não seja via protocolo smb - alterado para abrir URL no navegador.
+* Corrigido bug de download de insumos que não sejam via protocolo smb - alterado para abrir URL no navegador.
 
 ## Ferramentas de Produção v3.4.14
 
