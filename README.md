@@ -1,6 +1,7 @@
-## Ferramentas de Produção v3.4.14.1
+## Ferramentas de Produção v3.4.14.2
 
 * Corrigido bug de download de insumos que não sejam via protocolo smb - alterado para abrir URL no navegador.
+* Adicioando possiblidade de carregamento de insumos WFS e WMS
 
 ## Ferramentas de Produção v3.4.14
 
