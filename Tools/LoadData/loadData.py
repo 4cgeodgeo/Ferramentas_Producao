@@ -555,17 +555,61 @@ class LoadData(QtCore.QObject):
                     'epsg' : d['epsg']
                 }
                 for d in sap_data['dados']['atividade']['insumos'] 
-                if d['nome'] in settings_data['input_files']
+                if d['nome'] in settings_data['input_files'] and d['tipo_insumo_id'] not in [6,7]
             ]
+            wmss = [
+                { 
+                    'file_name' : d['nome'],
+                    'path_origin' : d['caminho'],
+                    'epsg' : d['epsg']
+                }
+                for d in sap_data['dados']['atividade']['insumos'] 
+                if d['nome'] in settings_data['input_files'] and d['tipo_insumo_id'] == 6
+            ]
+            wfss = [
+                { 
+                    'file_name' : d['nome'],
+                    'path_origin' : d['caminho'],
+                    'epsg' : d['epsg']
+                }
+                for d in sap_data['dados']['atividade']['insumos'] 
+                if d['nome'] in settings_data['input_files'] and d['tipo_insumo_id'] == 7
+            ]
+            """
+            'tipo_insumo_id':   5 # url
+                                6 # url WMS
+                                7 # url WFS
+            """
+            root = core.QgsProject.instance().layerTreeRoot()
+            
+            wfsgroup = root.addGroup("WFS") if wfss else 0
+            i = 1
+            for wfs in wfss:
+                flayer = core.QgsVectorLayer(wfs['path_origin'], wfs['file_name'], 'wfs')
+                if not flayer.isValid():
+                    core.QgsMessageLog.logMessage(str(wfs)+" Not valid!", level=core.Qgis.Info)
+                else:
+                    core.QgsProject.instance().addMapLayer(flayer,False)
+                    wfsgroup.insertChildNode(i,core.QgsLayerTreeLayer(flayer))
+                    i+=1
+                        
+            wmsgroup = root.addGroup("WMS") if wmss else 0
+            i = 1
+            for wms in wmss:
+                rlayer = core.QgsRasterLayer(wms['path_origin'], wms['file_name'], 'wms')
+                if not rlayer.isValid():
+                    core.QgsMessageLog.logMessage(str(wms)+" Not valid!", level=core.Qgis.Info)
+                else:
+                    core.QgsProject.instance().addMapLayer(rlayer,False)
+                    wmsgroup.insertChildNode(i,core.QgsLayerTreeLayer(rlayer))
+                    i+=1
+                    
             files_data = managerFile.download(paths_data)
             erro = []
             for f_data in files_data:
-                path_file = f_data['path_file']
-                file_name = f_data['file_name']
-                epsg = f_data['epsg']
-                r = self.add_raster_layer(file_name, path_file, epsg)
+                r = self.add_raster_layer(f_data['file_name'], f_data['path_file'], f_data['epsg'])
                 if not(r):
-                    erro.append(path_file)
+                    erro.append(f_data['path_file'])
             self.frame.show_erro(erro) if len(erro) > 0 else ''
 
     def add_raster_layer(self, raster_name, raster_path, epsg):
