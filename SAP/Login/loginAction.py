@@ -20,7 +20,7 @@ class LoginAction(QtWidgets.QAction):
     def __init__(self, iface): 
         super(LoginAction, self).__init__(
             QtGui.QIcon(self.path_icon),
-            u"Ferramentas de Produção",
+            u" - 4º CGEO",
             iface.mainWindow()
         )
         self.iface = iface 
