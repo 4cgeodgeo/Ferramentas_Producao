@@ -12,7 +12,7 @@ class LoginAction(QtWidgets.QAction):
             ".."
         )),
         'icons',
-        '1cgeo.png'
+        '4cgeo.png'
     )
 
     show_login_dialog = QtCore.pyqtSignal()
