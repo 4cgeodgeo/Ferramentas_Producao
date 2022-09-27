@@ -429,6 +429,9 @@ class LoadData(QtCore.QObject):
                 srid
             )
             lyr_virtual = core.QgsVectorLayer(query, "moldura", "virtual")
+            crs = lyr_virtual.crs()
+            crs.createFromId(int(srid))
+            lyr_virtual.setCrs(crs)
             vl = core.QgsProject.instance().addMapLayer(lyr_virtual, False)
             style_path = os.path.join(
                 os.path.dirname(__file__),
