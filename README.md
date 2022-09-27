@@ -1,5 +1,6 @@
-## Ferramentas de Produção v3.4.14.2
+## Ferramentas de Produção v3.4.14.3
 
+* Corrigido src da camada virtual moldura
 * Corrigido bug de download de insumos que não sejam via protocolo smb - alterado para abrir URL no navegador.
 * Adicioando possiblidade de carregamento de insumos WFS e WMS
 
